@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Windows Doors and More</title>
+<style>
+  :root {
+    --primary-color: #0a2e4d;
+    --accent-color: #f5a623;
+    --light-bg: #f9f9f9;
+    --text-color: #333;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--light-bg);
+    color: var(--text-color);
+  }
+
+  header {
+    background-color: var(--primary-color);
+    padding: 1.5rem 1rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  header a.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    user-select: none;
+  }
+
+  header a.logo svg {
+    flex-shrink: 0;
+  }
+
+  header a.logo span {
+    white-space: nowrap;
+  }
+
+  nav {
+    background-color: var(--primary-color);
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+  }
+
+  nav a {
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  nav a:hover,
+  nav a:focus {
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+    outline: none;
+  }
+
+  .hero {
+    background: url('https://via.placeholder.com/1600x600?text=Windows+Doors+and+More')
+      center/cover no-repeat;
+    color: white;
+    text-align: center;
+    padding: 8rem 1rem 6rem;
+    position: relative;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: rgba(10, 46, 77, 0.6);
+    z-index: 0;
+  }
+
+  .hero-content {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    z-index: 1;
+  }
+
+  .hero-content h2 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+  }
+
+  .hero-content p {
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+    font-weight: 500;
+  }
+
+  .btn-primary {
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+    border: none;
+    padding: 1rem 3rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 6px 15px rgba(245, 166, 35, 0.6);
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-primary:hover,
+  .btn-primary:focus {
+    background-color: #d98b1f;
+    outline: none;
+  }
+
+  section {
+    max-width: 1100px;
+    margin: 4rem auto;
+    padding: 0 1rem;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  h2 {
+    font-size: 2.8rem;
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  p {
+    max-width: 750px;
+    margin: 0 auto 3rem;
+    font-size: 1.1rem;
+    color: var(--text-color);
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  ul {
+    max-width: 600px;
+    margin: 0 auto 3rem;
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem 2rem;
+  }
+
+  ul li {
+    background: white;
+    color: var(--primary-color);
+    font-weight: 600;
+    padding: 1rem 1.6rem;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    flex: 1 1 220px;
+    text-align: center;
+  }
+
+  .carousel {
+    max-width: 1000px;
+    margin: 2rem auto 4rem;
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+  }
+
+  .carousel-slide {
+    min-width: 100%;
+    user-select: none;
+  }
+
+  .carousel-slide img {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(245, 166, 35, 0.8);
+    border: none;
+    color: var(--primary-color);
+    font-size: 2.2rem;
+    padding: 0.3rem 0.9rem;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease;
+    user-select: none;
+    z-index: 10;
+  }
+
+  .carousel-btn:hover,
+  .carousel-btn:focus {
+    background-color: #d98b1f;
+    outline: none;
+  }
+
+  .carousel-btn.prev {
+    left: 1rem;
+  }
+
+  .carousel-btn.next {
+    right: 1rem;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    max-width: 1100px;
+    margin: 0 auto 3rem;
+  }
+
+  .service-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    cursor: default;
+    transition: transform 0.3s ease;
+  }
+
+  .service-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  .service-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-bottom: 4px solid var(--accent-color);
+  }
+
+  .service-card-content {
+    padding: 1.5rem;
+    flex-grow: 1;
+  }
+
+  .service-card-content h3 {
+    margin-top: 0;
+    color: var(--primary-color);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    font-size: 1.5rem;
+  }
+
+  .service-card-content p {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 1rem;
+  }
+
+  #testimonials {
+    max-width: 900px;
+    margin: 4rem auto;
+    padding: 0 1rem;
+    text-align: center;
+  }
+
+  .testimonial-container {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .testimonial-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    flex: 1 1 280px;
+    font-style: italic;
+    color: var(--primary-color);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 180px;
+    transition: transform 0.3s ease;
+  }
+
+  .testimonial-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .testimonial-card h4 {
+    margin-top: 1.5rem;
+    font-style: normal;
+    font-weight: 700;
+    color: var(--accent-color);
+    align-self: flex-end;
+  }
+
+  #contact {
+    max-width: 600px;
+    margin: 0 auto 4rem;
+    padding: 3rem 2rem;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+    text-align: center;
+  }
+
+  #contact h2 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-weight: 700;
+    font-size: 2rem;
+  }
+
+  #contact p {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+
+  #contact a.phone-link {
+    display: inline-block;
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+    font-weight: 700;
+    padding: 1rem 2rem;
+    border-radius: 30px;
+    font-size: 1.2rem;
+    text-decoration: none;
+    box-shadow: 0 6px 15px rgba(245, 166, 35, 0.6);
+    transition: background-color 0.3s ease;
+  }
+
+  #contact a.phone-link:hover,
+  #contact a.phone-link:focus {
+    background-color: #d98b1f;
+    outline: none;
+  }
+
+  /* Appointment Form Styles */
+  #appointment-form label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+    color: var(--primary-color);
+  }
+
+  #appointment-form input,
+  #appointment-form textarea {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    font-family: inherit;
+  }
+
+  #appointment-form textarea {
+    resize: vertical;
+  }
+
+  #appointment-form button.btn-primary {
+    width: 100%;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 1rem;
+    cursor: pointer;
+  }
+
+  footer {
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    user-select: none;
+  }
+
+  @media (max-width: 768px) {
+    header {
+      font-size: 2rem;
+      padding: 1.5rem 1rem;
+    }
+
+    nav {
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .hero-content h2 {
+      font-size: 2.3rem;
+    }
+
+    .carousel-slide img {
+      height: 300px;
+    }
+
+    .service-card img {
+      height: 140px;
+    }
+
+    .testimonial-container {
+      flex-direction: column;
+    }
+  }
+</style>
+</head>
+<body>
+<header>
+  <a href="#" class="logo" aria-label="Windows Doors and More logo">
+    <svg
+      width="40"
+      height="40"
+      viewBox="0 0 64 64"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <rect
+        x="8"
+        y="8"
+        width="48"
+        height="48"
+        stroke="#F5A623"
+        stroke-width="4"
+        rx="6"
+        ry="6"
+        fill="none"
+      />
+      <line x1="32" y1="8" x2="32" y2="56" stroke="#F5A623" stroke-width="4" />
+      <line x1="8" y1="32" x2="56" y2="32" stroke="#F5A623" stroke-width="4" />
+    </svg>
+    <span>Windows Doors and More</span>
+  </a>
+</header>
+
+<nav role="navigation" aria-label="Primary navigation">
+  <a href="#windows">Windows</a>
+  <a href="#doors">Doors</a>
+  <a href="#floors">Floors</a>
+  <a href="#roofing">Roofing</a>
+  <a href="#siding">Siding</a>
+  <a href="#contact">Contact</a>
+</nav>
+
+<section class="hero" aria-label="Hero banner">
+  <div class="hero-content">
+    <h2>Your Home Deserves the Best Windows & Doors</h2>
+    <p>Expert installation and remodeling services that stand the test of time.</p>
+    <a href="#contact" class="btn-primary">Request a Free Quote</a>
+  </div>
+</section>
+
+<div class="carousel" aria-label="Portfolio image carousel">
+  <div class="carousel-track">
+    <div class="carousel-slide">
+      <img
+        src="https://via.placeholder.com/1000x500?text=Windows+Project"
+        alt="Windows project example"
+        loading="lazy"
+      />
+    </div>
+    <div class="carousel-slide">
+      <img
+        src="https://via.placeholder.com/1000x500?text=Doors+Project"
+        alt="Doors project example"
+        loading="lazy"
+      />
+    </div>
+  </div>
+  <button class="carousel-btn prev" aria-label="Previous Slide">&#10094;</button>
+  <button class="carousel-btn next" aria-label="Next Slide">&#10095;</button>
+</div>
+
+<section id="windows">
+  <h2>Windows</h2>
+  <p>Energy-efficient, beautiful, and built to last.</p>
+  <div class="services-grid">
+    <div class="service-card">
+      <img
+        src="https://via.placeholder.com/400x200?text=Windows"
+        alt="Window installation"
+      />
+      <div class="service-card-content">
+        <h3>Premium Window Installation</h3>
+        <p>High-performance windows that improve your home's comfort and curb appeal.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="doors">
+  <h2>Doors</h2>
+  <p>Secure and stylish entryways for every home.</p>
+  <div class="services-grid">
+    <div class="service-card">
+      <img
+        src="https://via.placeholder.com/400x200?text=Doors"
+        alt="Door installation"
+      />
+      <div class="service-card-content">
+        <h3>Elegant & Secure Doors</h3>
+        <p>Doors that combine style, durability, and security.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="other-services">
+  <h2>Floors, Roofing &amp; Siding</h2>
+  <p>Complementing your windows and doors with quality floors, roofing, and siding solutions.</p>
+  <ul>
+    <li>Floor Installation &amp; Refinishing</li>
+    <li>Durable Roofing Services</li>
+    <li>Weather-Resistant Siding</li>
+  </ul>
+</section>
+
+<section id="testimonials">
+  <h2>What Our Customers Say</h2>
+  <div class="testimonial-container">
+    <div class="testimonial-card">
+      <p>
+        "Windows Doors and More transformed our home! Their team was professional
+        and the new windows are stunning and energy-efficient."
+      </p>
+      <h4>— Sarah M.</h4>
+    </div>
+    <div class="testimonial-card">
+      <p>
+        "I highly recommend them for door installation. Excellent service, great
+        quality, and timely work."
+      </p>
+      <h4>— James L.</h4>
+    </div>
+    <div class="testimonial-card">
+      <p>
+        "We had our roof and siding replaced, and the crew was amazing. Clean,
+        efficient, and reliable."
+      </p>
+      <h4>— Karen P.</h4>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <h2>Contact Us</h2>
+  <p>
+    Call us today at <a href="tel:+1234567890" class="phone-link" aria-label="Call Windows Doors and More">+1 (234) 567-890</a> or fill out the form below to request an appointment.
+  </p>
+
+  <form id="appointment-form" aria-label="Appointment Request Form">
+    <label for="name">Full Name</label>
+    <input type="text" id="name" name="name" required />
+
+    <label for="email">Email Address</label>
+    <input type="email" id="email" name="email" required />
+
+    <label for="phone">Phone Number</label>
+    <input type="tel" id="phone" name="phone" required />
+
+    <label for="service">Service Interested In</label>
+    <select id="service" name="service" required>
+      <option value="" disabled selected>Select a service</option>
+      <option value="Windows">Windows</option>
+      <option value="Doors">Doors</option>
+      <option value="Floors">Floors</option>
+      <option value="Roofing">Roofing</option>
+      <option value="Siding">Siding</option>
+      <option value="Other">Other</option>
+    </select>
+
+    <label for="message">Additional Details</label>
+    <textarea id="message" name="message" rows="4" placeholder="Tell us more..."></textarea>
+
+    <button type="submit" class="btn-primary">Submit Appointment Request</button>
+  </form>
+  <p id="form-status" role="alert" style="color: green; font-weight: 600; margin-top:1rem;"></p>
+</section>
+
+<footer>
+  &copy; 2025 Windows Doors and More. All rights reserved.
+</footer>
+
+<script>
+  // Carousel functionality
+  const track = document.querySelector('.carousel-track');
+  const slides = Array.from(track.children);
+  const prevButton = document.querySelector('.carousel-btn.prev');
+  const nextButton = document.querySelector('.carousel-btn.next');
+  let currentIndex = 0;
+
+  function updateCarousel() {
+    const slideWidth = slides[0].getBoundingClientRect().width;
+    track.style.transform = 'translateX(' + (-slideWidth * currentIndex) + 'px)';
+  }
+
+  prevButton.addEventListener('click', () => {
+    currentIndex = (currentIndex === 0) ? slides.length - 1 : currentIndex - 1;
+    updateCarousel();
+  });
+
+  nextButton.addEventListener('click', () => {
+    currentIndex = (currentIndex === slides.length - 1) ? 0 : currentIndex + 1;
+    updateCarousel();
+  });
+
+  window.addEventListener('resize', updateCarousel);
+  updateCarousel();
+
+  // Animate sections on scroll
+  function revealSections() {
+    const sections = document.querySelectorAll('section');
+    const triggerBottom = window.innerHeight * 0.85;
+
+    sections.forEach(section => {
+      const sectionTop = section.getBoundingClientRect().top;
+
+      if (sectionTop < triggerBottom) {
+        section.classList.add('visible');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', revealSections);
+  window.addEventListener('load', revealSections);
+
+  // Form submission to Google Sheets
+  const form = document.getElementById('appointment-form');
+  const formStatus = document.getElementById('form-status');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    formStatus.textContent = '';
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch('https://script.google.com/macros/s/AKfycbwBZbhu8c63JBd-R3OJW_0g4IQnqoj1C6Ha4rXEiWdQq2Mm_Z5OilRIZgDJaK3AUCfX/exec', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        formStatus.style.color = 'green';
+        formStatus.textContent = 'Thank you! Your appointment request has been submitted.';
+        form.reset();
+      } else {
+        throw new Error('Network response was not ok.');
+      }
+    } catch (error) {
+      formStatus.style.color = 'red';
+      formStatus.textContent = 'Oops! Something went wrong. Please try again later.';
+      console.error('Form submission error:', error);
+    }
+  });
+</script>
+</body>
+</html>
